@@ -1,0 +1,20 @@
+macos-titlebar-style = tabs
+
+font-family = Hack Nerd Font Mono
+font-size = 17
+font-thicken = true
+font-style = bold
+# adjust-cell-height = 12%
+window-padding-x = 12
+window-padding-y = 6
+theme = Everforest Light Med
+background = fdf6e3
+
+# Boost saturation on normal palette (slots 1-6) — defaults are too muted on a light screen.
+# Hues preserved; saturation increased ~25-30% for better color definition.
+palette = 1=#e04f52
+palette = 2=#72a840
+palette = 3=#c08428
+palette = 4=#40a89e
+palette = 5=#c860a8
+palette = 6=#4aad68

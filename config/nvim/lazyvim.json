@@ -1,0 +1,19 @@
+{
+  "extras": [
+    "lazyvim.plugins.extras.ai.claudecode",
+    "lazyvim.plugins.extras.ai.copilot",
+    "lazyvim.plugins.extras.coding.yanky",
+    "lazyvim.plugins.extras.dap.core",
+    "lazyvim.plugins.extras.dap.nlua",
+    "lazyvim.plugins.extras.editor.mini-files",
+    "lazyvim.plugins.extras.lang.php",
+    "lazyvim.plugins.extras.lsp.none-ls",
+    "lazyvim.plugins.extras.test.core",
+    "lazyvim.plugins.extras.util.octo"
+  ],
+  "install_version": 8,
+  "news": {
+    "NEWS.md": "11866"
+  },
+  "version": 8
+}
