@@ -37,7 +37,14 @@ else
   compinit -C
 fi
 
+# Added by codebase-memory-mcp install
+export PATH="/Users/ilja.polanskis/.local/bin:$PATH"
+
+# Claude Code config location (XDG-style)
+export CLAUDE_CONFIG_DIR="$HOME/.config/claude"
+
 # ── History ───────────────────────────────────────────────────────
+# TODO: FIX HISTORY
 # HISTFILE=$HOME/.zsh_history
 # HISTSIZE=10000
 # SAVEHIST=10000
@@ -158,3 +165,4 @@ pr-eu1() {
         --editor \
         "$@"
 }
+
