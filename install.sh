@@ -19,12 +19,20 @@ BACKUP_DIR="$HOME/.dotfiles-backup/$TIMESTAMP"
 
 # repo-relative source  ->  absolute destination in $HOME
 MAP=(
-  "zsh/.zshrc:$HOME/.zshrc"
-  "config/nvim:$HOME/.config/nvim"
-  "config/ghostty:$HOME/.config/ghostty"
-  "config/aerospace:$HOME/.config/aerospace"
-  "config/sketchybar:$HOME/.config/sketchybar"
-  "config/lazygit:$HOME/.config/lazygit"
+    "zsh/.zshrc:$HOME/.zshrc"
+    "config/nvim:$HOME/.config/nvim"
+    "config/ghostty:$HOME/.config/ghostty"
+    "config/aerospace:$HOME/.config/aerospace"
+    "config/sketchybar:$HOME/.config/sketchybar"
+    "config/lazygit:$HOME/.config/lazygit"
+
+    "config/claude/settings.json:$HOME/.config/claude/settings.json"
+    "config/claude/statusline-command.sh:$HOME/.config/claude/statusline-command.sh"
+    "config/claude/.mcp.json:$HOME/.config/claude/.mcp.json"
+    "config/claude/hooks:$HOME/.config/claude/hooks"
+    "config/claude/skills/codebase-memory:$HOME/.config/claude/skills/codebase-memory"
+    "config/claude/skills/opensearch:$HOME/.config/claude/skills/opensearch"
+    "config/agents:$HOME/.agents"
 )
 
 n_linked=0 n_skipped=0 n_backed=0
@@ -32,35 +40,44 @@ n_linked=0 n_skipped=0 n_backed=0
 say() { printf '%s\n' "$*"; }
 run() { if [[ $DRY_RUN -eq 1 ]]; then say "  [dry-run] $*"; else eval "$*"; fi; }
 
-link() {
-  local src="$DOTFILES_DIR/$1" dest="$2"
+link_abs() {
+    local src="$1" dest="$2"
 
-  if [[ ! -e "$src" ]]; then
-    say "!! missing source, skip: $src"
-    return
-  fi
+    if [[ ! -e "$src" ]]; then
+        say "!! missing source, skip: $src"
+        return
+    fi
 
-  # Already linked correctly -> nothing to do.
-  if [[ -L "$dest" && "$(readlink "$dest")" == "$src" ]]; then
-    say "== skip (already linked): $dest"
-    ((n_skipped++)) || true
-    return
-  fi
+    if [[ -L "$dest" && "$(readlink "$dest")" == "$src" ]]; then
+        say "== skip (already linked): $dest"
+        ((n_skipped++)) || true
+        return
+    fi
 
-  # Something is in the way -> back it up (preserving its path under the backup dir).
-  if [[ -e "$dest" || -L "$dest" ]]; then
-    local rel="${dest#"$HOME"/}"
-    local bpath="$BACKUP_DIR/$rel"
-    say "-> backup: $dest  ->  $bpath"
-    run "mkdir -p \"\$(dirname \"$bpath\")\""
-    run "mv \"$dest\" \"$bpath\""
-    ((n_backed++)) || true
-  fi
+    if [[ -e "$dest" || -L "$dest" ]]; then
+        local rel="${dest#"$HOME"/}"
+        local bpath="$BACKUP_DIR/$rel"
+        say "-> backup: $dest  ->  $bpath"
+        run "mkdir -p \"\$(dirname \"$bpath\")\""
+        run "mv \"$dest\" \"$bpath\""
+        ((n_backed++)) || true
+    fi
 
-  say "-> link: $dest  ->  $src"
-  run "mkdir -p \"\$(dirname \"$dest\")\""
-  run "ln -s \"$src\" \"$dest\""
-  ((n_linked++)) || true
+    say "-> link: $dest  ->  $src"
+    run "mkdir -p \"\$(dirname \"$dest\")\""
+    run "ln -s \"$src\" \"$dest\""
+    ((n_linked++)) || true
+}
+
+link() { link_abs "$DOTFILES_DIR/$1" "$2"; }
+
+link_skill_farm() {
+    local skill name
+    for skill in "$DOTFILES_DIR"/config/agents/skills/*/; do
+        [[ -d "$skill" ]] || continue
+        name="$(basename "$skill")"
+        link_abs "$HOME/.agents/skills/$name" "$HOME/.config/claude/skills/$name"
+    done
 }
 
 say "dotfiles: $DOTFILES_DIR"
@@ -68,11 +85,13 @@ say "dotfiles: $DOTFILES_DIR"
 say ""
 
 for entry in "${MAP[@]}"; do
-  link "${entry%%:*}" "${entry#*:}"
+    link "${entry%%:*}" "${entry#*:}"
 done
+
+link_skill_farm
 
 say ""
 say "done. linked=$n_linked  skipped=$n_skipped  backed-up=$n_backed"
 if [[ $n_backed -gt 0 && $DRY_RUN -eq 0 ]]; then
-  say "backups: $BACKUP_DIR"
+    say "backups: $BACKUP_DIR"
 fi
