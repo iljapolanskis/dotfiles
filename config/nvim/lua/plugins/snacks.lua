@@ -40,13 +40,22 @@ return {
       picker = {
         sources = {
           explorer = {
-            layout = { layout = { position = "right" } },
+            layout = {
+              layout = {
+                position = "right",
+                width = 60,
+              },
+            },
             hidden = true,
             ignored = true,
           },
           files = {
             hidden = true, -- show dotfiles in fuzzy finder
             ignored = true, -- show gitignored files
+          },
+          grep = {
+            hidden = true, -- grep dotfiles too
+            ignored = true, -- grep gitignored files (e.g. vendor/)
           },
         },
       },

@@ -1,10 +1,8 @@
 macos-titlebar-style = tabs
 
-font-family = Hack Nerd Font Mono
+font-family = JetBrainsMono Nerd Font Mono
 font-size = 17
-font-thicken = true
-font-style = bold
-# adjust-cell-height = 12%
+font-thicken = false
 window-padding-x = 12
 window-padding-y = 6
 theme = Everforest Light Med

@@ -43,6 +43,9 @@ export PATH="/Users/ilja.polanskis/.local/bin:$PATH"
 # Claude Code config location (XDG-style)
 export CLAUDE_CONFIG_DIR="$HOME/.config/claude"
 
+# k9s config location (else falls back to ~/Library/Application Support/k9s)
+export K9S_CONFIG_DIR="$HOME/.config/k9s"
+
 # ── History ───────────────────────────────────────────────────────
 # TODO: FIX HISTORY
 # HISTFILE=$HOME/.zsh_history
