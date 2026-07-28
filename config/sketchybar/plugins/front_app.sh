@@ -7,4 +7,8 @@
 
 if [ "$SENDER" = "front_app_switched" ]; then
   sketchybar --set "$NAME" label="$INFO"
+else
+  # Forced --update / non-event: query current front app so the item is
+  # populated on startup instead of blank until the first app switch.
+  sketchybar --set "$NAME" label="$(osascript -e 'tell application "System Events" to name of first application process whose frontmost is true')"
 fi

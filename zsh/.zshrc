@@ -169,3 +169,6 @@ pr-eu1() {
         "$@"
 }
 
+
+# Added by codebase-memory-mcp install
+export PATH="/Users/kau3ep/.local/bin:$PATH"
