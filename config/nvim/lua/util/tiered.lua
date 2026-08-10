@@ -102,7 +102,7 @@ function M.files_finder(opts, ctx)
     for _, g in ipairs(globs) do
       vim.list_extend(args, { "-g", g })
     end
-    local pass_opts = vim.tbl_deep_extend("force", {}, opts, { cmd = "rg" })
+    local pass_opts = vim.tbl_deep_extend("force", {}, opts, { cmd = "rg", live = true })
     pass_opts.args = args
     return files.files(pass_opts, ctx)
   end)

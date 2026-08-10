@@ -30,7 +30,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "/Users/kau3ep/.config/claude/hooks/cbm-code-discovery-gate",
+                        "command": "~/.config/claude/hooks/cbm-code-discovery-gate",
                         "timeout": 5
                     }
                 ]
@@ -42,7 +42,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "/Users/kau3ep/.config/claude/hooks/cbm-session-reminder"
+                        "command": "~/.config/claude/hooks/cbm-session-reminder"
                     }
                 ]
             },
@@ -51,7 +51,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "/Users/kau3ep/.config/claude/hooks/cbm-session-reminder"
+                        "command": "~/.config/claude/hooks/cbm-session-reminder"
                     }
                 ]
             },
@@ -60,7 +60,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "/Users/kau3ep/.config/claude/hooks/cbm-session-reminder"
+                        "command": "~/.config/claude/hooks/cbm-session-reminder"
                     }
                 ]
             },
@@ -69,7 +69,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "/Users/kau3ep/.config/claude/hooks/cbm-session-reminder"
+                        "command": "~/.config/claude/hooks/cbm-session-reminder"
                     }
                 ]
             }
@@ -80,7 +80,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "/Users/kau3ep/.config/claude/hooks/cbm-subagent-reminder"
+                        "command": "~/.config/claude/hooks/cbm-subagent-reminder"
                     }
                 ]
             }
