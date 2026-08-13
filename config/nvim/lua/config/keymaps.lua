@@ -23,6 +23,19 @@ vim.keymap.set("n", "<leader>fG", function()
   Snacks.picker.grep({ root = false })
 end, { desc = "Grep (cwd)" })
 
+-- gr inside XML + YAML config, keyed off the FQCN under the cursor -- the same
+-- picker PHP's gr uses, which branches on filetype (lua/util/php_refs.lua).
+-- Safe to bind plainly here: these buffers have no LSP client, so LazyVim's
+-- LSP-filtered keymaps never claim the key.
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "xml", "yaml" },
+  callback = function(ev)
+    vim.keymap.set("n", "gr", function()
+      Snacks.picker.lsp_references()
+    end, { buffer = ev.buf, desc = "References of PHP class" })
+  end,
+})
+
 -- terminal in current file's directory
 -- vim.keymap.set("n", "<leader>fD", function()
 --   Snacks.terminal(nil, { cwd = vim.fn.expand("%:p:h") })
