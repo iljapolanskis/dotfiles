@@ -72,6 +72,16 @@
                         "command": "~/.config/claude/hooks/cbm-session-reminder"
                     }
                 ]
+            },
+            {
+                "matcher": "*",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "bash '/Users/ilja.polanskis/.config/claude/hooks/herdr-agent-state.sh' session",
+                        "timeout": 10
+                    }
+                ]
             }
         ],
         "SubagentStart": [

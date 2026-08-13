@@ -1,0 +1,47 @@
+# herdr config — see `herdr --default-config` for all options
+# Bare keys must stay above the first [table] header.
+onboarding = false
+
+[theme]
+# Follow host terminal ANSI palette
+name = "gruvbox-light"
+auto_switch = false
+
+[keys]
+# Everything direct rides the hyper key (Hyperkey.app maps caps lock to
+# ctrl+alt+cmd+shift). Bare alt+hjkl was dead: aerospace binds alt-h/j/k/l and
+# alt-shift-h/j/k/l for window focus/move, so herdr never saw the keypress.
+# Aerospace only claims hyper+1..0 (move-node-to-workspace), the rest is free.
+# prefix stays at the default ctrl+b.
+# Tabs on h/l (horizontal row), spaces on j/k (vertical list), agents on [ / ].
+previous_tab = "ctrl+shift+alt+cmd+h"
+next_tab = "ctrl+shift+alt+cmd+l"
+previous_workspace = "ctrl+shift+alt+cmd+k"
+next_workspace = "ctrl+shift+alt+cmd+j"
+previous_agent = "ctrl+shift+alt+cmd+["
+next_agent = "ctrl+shift+alt+cmd+]"
+new_tab = "ctrl+shift+alt+cmd+c"
+# Detach leaves the session running in the background; it does not kill panes.
+# Not q: Ghostty/macOS claim cmd+q, so the chord never reaches herdr.
+detach = "ctrl+shift+alt+cmd+d"
+# Sidebar show/hide on demand. Direct chord replaces the prefix+b default.
+toggle_sidebar = "ctrl+shift+alt+cmd+e"
+
+[ui]
+agent_panel_sort = "spaces"
+show_agent_labels_on_pane_borders = true
+# "hidden" = zero width when collapsed ("compact" keeps narrow status rail)
+sidebar_collapsed_mode = "hidden"
+# collapsed_mode only sets *how* it collapses; this is what hides it at launch.
+# Takes effect on next launch, not on reload_config.
+sidebar_start_collapsed = true
+hide_tab_bar_when_single_tab = true
+
+[ui.sound]
+enabled = false
+
+[ui.toast]
+delivery = "herdr"
+
+[experimental]
+switch_ascii_input_source_in_prefix = true

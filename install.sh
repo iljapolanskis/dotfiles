@@ -26,6 +26,7 @@ MAP=(
     "config/sketchybar:$HOME/.config/sketchybar"
     "config/lazygit:$HOME/.config/lazygit"
 
+    "config/herdr/config.toml:$HOME/.config/herdr/config.toml"
     "config/claude/settings.json:$HOME/.config/claude/settings.json"
     "config/claude/statusline-command.sh:$HOME/.config/claude/statusline-command.sh"
     "config/claude/.mcp.json:$HOME/.config/claude/.mcp.json"

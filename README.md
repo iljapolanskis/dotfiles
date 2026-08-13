@@ -13,6 +13,17 @@ Personal config, version-controlled and symlinked into place.
 | `config/sketchybar`  | `~/.config/sketchybar` |
 | `config/lazygit`     | `~/.config/lazygit`    |
 
+### Herdr
+
+Only `config.toml` is linked, not the whole directory — herdr keeps its sockets,
+logs and `session.json` in `~/.config/herdr/`.
+
+| Repo path                  | Symlinked to                   |
+|----------------------------|--------------------------------|
+| `config/herdr/config.toml` | `~/.config/herdr/config.toml`  |
+
+Apply changes without restarting: `herdr server reload-config`.
+
 ### Claude Code (global)
 
 `~/.claude` is a symlink to `~/.config/claude` on this setup, so targets point at the real
