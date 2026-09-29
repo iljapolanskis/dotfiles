@@ -35,39 +35,83 @@ sketchybar --default "${default[@]}"
 
 ##### Adding AeroSpace Workspace Indicators #####
 # Regular items (not space components) tied to AeroSpace named workspaces.
-# Subscribes to aerospace_workspace_change event fired from aerospace.toml.
+# The hidden `spaces` item repaints them on aerospace_workspace_change (fired
+# from aerospace.toml).
 
 # Register custom events so --trigger and --subscribe work
 sketchybar --add event aerospace_workspace_change
 sketchybar --add event window_focus_changed
 sketchybar --add event input_change AppleSelectedInputSourcesChangedNotification
 
-# Monitor 1: cli code db api misc
-# Monitor 2: firefox chrome notes email slack
-WORKSPACES=("cli"    "code" "db" "api"     "misc" "chrome" "firefox" "notes" "email" "slack")
-WORKSPACE_ICONS=(
-  $''   # cli       — nf-dev-terminal
-  ""   # code      — nf-fa-code
-  $''   # db        — nf-fa-database
-  "󰌶"   # api       — nf-md-api
-  $''   # misc      — nf-fa-th-large
-  $''   # chrome    — nf-fa-chrome
-  $''   # firefox   — nf-dev-firefox
-  $''   # notes     — nf-fa-book
-  $''   # email     — nf-fa-envelope
-  $''   # slack     — nf-mdi-slack
+# One row per workspace: name, monitor side, icon. `left`/`right` are resolved
+# to real sketchybar display ids just below.
+#
+# This was three parallel arrays indexed by the same `i`, kept in sync by eye,
+# with hand-inserted spaces pretending to align columns that never actually
+# lined up. Now a mismatch is impossible.
+#  name     side   icon
+WORKSPACES=(
+  "cli      left   "  # nf-dev-terminal
+  "code     left   "  # nf-fa-code
+  "db       left   "  # nf-fa-database
+  "api      left   󰌶"  # nf-md-api
+  "misc     left   "  # nf-fa-th-large
+  "chrome   right  "  # nf-fa-chrome
+  "firefox  right  "  # nf-dev-firefox
+  "notes    right  "  # nf-fa-book
+  "email    right  "  # nf-fa-envelope
+  "slack    right  "  # nf-mdi-slack
 )
-WORKSPACE_MONITORS=(1 1          1    1         1     2        2         2          2       2)
-MONITOR_COUNT=$(aerospace list-monitors 2>/dev/null | wc -l | tr -d ' ')
 
-for i in "${!WORKSPACES[@]}"
+# `left`/`right` -> sketchybar `display=`.
+#
+# Two unrelated numberings, and on this machine they are INVERTED:
+#
+#   physical   x       aerospace monitor-id   sketchybar display=
+#   left       -1920   1                      2
+#   right          0   2                      1  (main)
+#
+# aerospace sorts monitors left to right. sketchybar takes the macOS
+# *arrangement* index, which puts the main display first. So feeding the
+# aerospace id straight into `display=` — what this config did — drew every
+# workspace indicator on the opposite screen from its own workspace.
+#
+# aerospace reports both numbers, so derive the map instead of hardcoding it:
+#   monitor-id                         position, left to right
+#   monitor-appkit-nsscreen-screens-id macOS arrangement index = display=
+# Cross-check any time with: sketchybar --query displays
+#
+# Here-doc, not a pipe: a `while read` in a pipeline runs in a subshell and
+# the array would not survive it.
+DISPLAYS_LTR=()
+while IFS='|' read -r _ display_id; do
+  [ -n "$display_id" ] && DISPLAYS_LTR+=("$display_id")
+done <<EOF
+$(aerospace list-monitors --format '%{monitor-id}|%{monitor-appkit-nsscreen-screens-id}' 2>/dev/null)
+EOF
+
+# One monitor: left and right collapse onto it, so no monitor-count branch.
+# The emptiness check is load-bearing: sketchybar can start before AeroSpace is
+# up, and bash 3.2 (what /bin/sh is here, and what sketchybar execs this with)
+# errors on a negative array subscript rather than returning empty.
+DISPLAY_LEFT=1
+DISPLAY_RIGHT=1
+if [ "${#DISPLAYS_LTR[@]}" -gt 0 ]; then
+  DISPLAY_LEFT="${DISPLAYS_LTR[0]}"
+  DISPLAY_RIGHT="${DISPLAYS_LTR[$(( ${#DISPLAYS_LTR[@]} - 1 ))]}"
+fi
+
+for row in "${WORKSPACES[@]}"
 do
-  ws="${WORKSPACES[i]}"
-  mon="${WORKSPACE_MONITORS[i]}"
-  [ "$MONITOR_COUNT" -gt 1 ] && DISPLAY_MON="$mon" || DISPLAY_MON=1
+  read -r ws side icon <<< "$row"
+  case "$side" in
+    left)  DISPLAY_MON="$DISPLAY_LEFT"  ;;
+    right) DISPLAY_MON="$DISPLAY_RIGHT" ;;
+    *)     DISPLAY_MON="$side"          ;;  # a literal display index still works
+  esac
   space=(
     display="$DISPLAY_MON"
-    icon="${WORKSPACE_ICONS[i]}"
+    icon="$icon"
     icon.padding_left=7
     icon.padding_right=7
     label="$ws"
@@ -79,13 +123,18 @@ do
     background.corner_radius=5
     background.height=25
     background.drawing=off
-    script="$PLUGIN_DIR/space.sh"
     click_script="aerospace workspace $ws"
   )
   sketchybar --add item space."$ws" left \
-             --set space."$ws" "${space[@]}" \
-             --subscribe space."$ws" aerospace_workspace_change system_woke
+             --set space."$ws" "${space[@]}"
+  WS_NAMES="$WS_NAMES $ws"
 done
+
+# One hidden controller repaints every indicator per event, instead of each
+# item running its own script: far fewer execs per switch (see spaces.sh).
+sketchybar --add item spaces left \
+           --set spaces drawing=off script="$PLUGIN_DIR/spaces.sh$WS_NAMES" \
+           --subscribe spaces aerospace_workspace_change system_woke
 
 ##### Adding Left Items #####
 # We add some regular items to the left side of the bar, where

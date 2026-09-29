@@ -102,7 +102,7 @@
   },
   "enabledPlugins": {
     "code-review@claude-plugins-official": true,
-    "context7@claude-plugins-official": false,
+    "context7@claude-plugins-official": true,
     "atlassian@claude-plugins-official": false,
     "explanatory-output-style@claude-plugins-official": true,
     "greptile@claude-plugins-official": false,

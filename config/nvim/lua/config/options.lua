@@ -19,3 +19,11 @@ function _G.project_tabline()
   return s .. "%#TabLineFill#%T"
 end
 vim.o.tabline = "%!v:lua.project_tabline()"
+
+-- Don't re-equalize the whole window tree on every split open/close. Default-on
+-- `equalalways` is what makes the dap-ui layout jump when <leader>e or <c-/>
+-- opens a window: dap-ui marks its windows winfixwidth/winfixheight, but that's
+-- only best-effort and gets overridden when a whole row is fixed. With this off,
+-- a new split only takes space from its own parent frame and gives it back on
+-- close, leaving the debug layout alone.
+vim.o.equalalways = false

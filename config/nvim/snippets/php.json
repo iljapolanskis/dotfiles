@@ -1,0 +1,153 @@
+{
+  "PHP file header": {
+    "prefix": "sh",
+    "description": "<?php + strict_types, no namespace",
+    "body": [
+      "<?php",
+      "",
+      "declare(strict_types=1);",
+      "",
+      "$0"
+    ]
+  },
+  "Final class": {
+    "prefix": "sc",
+    "description": "Final class, PSR-4 namespace",
+    "body": [
+      "<?php",
+      "",
+      "declare(strict_types=1);",
+      "",
+      "namespace ${1:__NS__};",
+      "",
+      "final class ${2:$TM_FILENAME_BASE}",
+      "{",
+      "\t$0",
+      "}"
+    ]
+  },
+  "Abstract class": {
+    "prefix": "sac",
+    "description": "Abstract class, PSR-4 namespace",
+    "body": [
+      "<?php",
+      "",
+      "declare(strict_types=1);",
+      "",
+      "namespace ${1:__NS__};",
+      "",
+      "abstract class ${2:$TM_FILENAME_BASE}",
+      "{",
+      "\t$0",
+      "}"
+    ]
+  },
+  "Interface": {
+    "prefix": "si",
+    "description": "Interface, PSR-4 namespace",
+    "body": [
+      "<?php",
+      "",
+      "declare(strict_types=1);",
+      "",
+      "namespace ${1:__NS__};",
+      "",
+      "interface ${2:$TM_FILENAME_BASE}",
+      "{",
+      "\t$0",
+      "}"
+    ]
+  },
+  "Trait": {
+    "prefix": "st",
+    "description": "Trait, PSR-4 namespace",
+    "body": [
+      "<?php",
+      "",
+      "declare(strict_types=1);",
+      "",
+      "namespace ${1:__NS__};",
+      "",
+      "trait ${2:$TM_FILENAME_BASE}",
+      "{",
+      "\t$0",
+      "}"
+    ]
+  },
+  "Enum": {
+    "prefix": "se",
+    "description": "Pure enum, PSR-4 namespace",
+    "body": [
+      "<?php",
+      "",
+      "declare(strict_types=1);",
+      "",
+      "namespace ${1:__NS__};",
+      "",
+      "enum ${2:$TM_FILENAME_BASE}",
+      "{",
+      "\tcase ${3:Foo};",
+      "\t$0",
+      "}"
+    ]
+  },
+  "Backed enum": {
+    "prefix": "ses",
+    "description": "Backed enum, PSR-4 namespace",
+    "body": [
+      "<?php",
+      "",
+      "declare(strict_types=1);",
+      "",
+      "namespace ${1:__NS__};",
+      "",
+      "enum ${2:$TM_FILENAME_BASE}: ${3|string,int|}",
+      "{",
+      "\tcase ${4:Foo} = '${5:foo}';",
+      "\t$0",
+      "}"
+    ]
+  },
+  "PHPUnit test case": {
+    "prefix": "su",
+    "description": "PHPUnit TestCase, PSR-4 namespace",
+    "body": [
+      "<?php",
+      "",
+      "declare(strict_types=1);",
+      "",
+      "namespace ${1:__NS__};",
+      "",
+      "use PHPUnit\\\\Framework\\\\TestCase;",
+      "",
+      "final class ${2:$TM_FILENAME_BASE} extends TestCase",
+      "{",
+      "\tpublic function test${3:ItWorks}(): void",
+      "\t{",
+      "\t\t$0",
+      "\t}",
+      "}"
+    ]
+  },
+  "Constructor": {
+    "prefix": "sctor",
+    "description": "Constructor with promoted property",
+    "body": [
+      "public function __construct(",
+      "\tprivate readonly ${1:Type} \\$${2:name},",
+      ") {",
+      "}",
+      "$0"
+    ]
+  },
+  "Public method": {
+    "prefix": "sm",
+    "description": "Public method with return type",
+    "body": [
+      "public function ${1:name}(${2}): ${3:void}",
+      "{",
+      "\t$0",
+      "}"
+    ]
+  }
+}

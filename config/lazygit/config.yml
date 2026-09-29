@@ -1,0 +1,34 @@
+gui:
+  # Panel groups, top to bottom. Each inner list = one panel whose entries are
+  # tabs (cycle with `]` / `[`). Fewer groups => more height for `files`.
+  sidePanels:
+    - [files, worktrees, submodules, status, stash]
+    - [commits, reflog, branches, remotes, tags]
+
+  # Accordion: focused panel swallows the rest of the column.
+  expandFocusedSidePanel: true
+  expandedSidePanelWeight: 6
+
+  # Wider left column, diff still gets the majority.
+  sidePanelWidth: 0.4
+
+  # Diff/staging always side-by-side instead of stacked.
+  mainPanelSplitMode: vertical
+
+  # Never flip to the stacked single-column layout on narrow terminals.
+  portraitMode: never
+
+  # `+` / `_` cycle normal -> half -> full; half-screen puts the side panel on top.
+  enlargedSideViewLocation: left
+
+  showFileTree: true
+  nerdFontsVersion: "3"
+
+os:
+  editPreset: nvim-remote
+  # Same as the nvim-remote preset but `--remote` instead of `--remote-tab`,
+  # so `e` reuses the current window instead of spawning a tab per file.
+  edit: '[ -z "$NVIM" ] && (nvim -- {{filename}}) || (nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}})'
+  editAtLine: '[ -z "$NVIM" ] && (nvim +{{line}} -- {{filename}}) || (nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}} && nvim --server "$NVIM" --remote-send ":{{line}}<CR>")'
+  editAtLineAndWait: 'nvim +{{line}} {{filename}}'
+  openDirInEditor: '[ -z "$NVIM" ] && (nvim -- {{dir}}) || (nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{dir}})'

@@ -10,9 +10,10 @@
     "lazyvim.plugins.extras.lang.json",
     "lazyvim.plugins.extras.lang.markdown",
     "lazyvim.plugins.extras.lang.php",
+    "lazyvim.plugins.extras.lang.sql",
+    "lazyvim.plugins.extras.lang.twig",
     "lazyvim.plugins.extras.lsp.none-ls",
-    "lazyvim.plugins.extras.test.core",
-    "lazyvim.plugins.extras.util.octo"
+    "lazyvim.plugins.extras.test.core"
   ],
   "install_version": 8,
   "news": {

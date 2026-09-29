@@ -25,6 +25,7 @@ MAP=(
     "config/aerospace:$HOME/.config/aerospace"
     "config/sketchybar:$HOME/.config/sketchybar"
     "config/lazygit:$HOME/.config/lazygit"
+    "config/atuin:$HOME/.config/atuin"
 
     "config/herdr/config.toml:$HOME/.config/herdr/config.toml"
     "config/claude/settings.json:$HOME/.config/claude/settings.json"

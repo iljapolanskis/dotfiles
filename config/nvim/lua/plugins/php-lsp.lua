@@ -4,6 +4,14 @@ return {
     opts = {
       servers = {
         intelephense = {
+          handlers = {
+            -- nvim 0.12's default rename handler applies the WorkspaceEdit and
+            -- stops: every file it touched is left as an unsaved hidden buffer,
+            -- so the rename is gone unless you remember `:wa`. See util.lsp_edit.
+            ["textDocument/rename"] = function(...)
+              return require("util.lsp_edit").rename_handler(...)
+            end,
+          },
           -- Fixed cache dir (default is a random os.tmpdir() path). Predictable →
           -- clear a stale index with: rm -rf ~/.cache/nvim/intelephense
           init_options = {

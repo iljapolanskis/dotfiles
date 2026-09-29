@@ -37,17 +37,41 @@ return {
       { "<leader>fS", function() Snacks.picker.lsp_workspace_symbols({ filter = LazyVim.config.kind_filter }) end, desc = "LSP Workspace Symbols" },
     },
     opts = {
+      -- Float, not the default bottom split (snacks/terminal.lua: `position =
+      -- cmd and "float" or "bottom"`). A bottom split lands in the same region
+      -- as dap-ui's window stack and shoves it around; a float is outside the
+      -- window tree, so <c-/> costs zero layout while debugging.
+      terminal = {
+        -- `border = "solid"` is a 1-cell blank ring drawn in FloatBorder, and
+        -- gruvbox gives FloatBorder the same bg as NormalFloat (#ebdbb2), so the
+        -- ring reads as padding, not a frame: text no longer butts against the
+        -- window edge. Neovim floats only ever have one border ring, so this
+        -- trades the rounded line for the gap; the float still separates from the
+        -- buffer because its bg differs from Normal (#fbf1c7).
+        win = { position = "float", border = "solid" },
+      },
       picker = {
         sources = {
           explorer = {
             layout = {
               layout = {
                 position = "right",
-                width = 60,
+                width = 80,
               },
             },
             hidden = true,
             ignored = true,
+            -- The sidebar is a real split, so it takes its 60 columns off the
+            -- debug windows on open and hands them back on close -- both
+            -- directions leave dap-ui skewed. Snap it back each way (no-op when
+            -- no debug layout is open). Explorer's own source wraps on_close but
+            -- chains to ours (snacks/picker/source/explorer.lua).
+            on_show = function()
+              require("util.dap_layout").reset_soon()
+            end,
+            on_close = function()
+              require("util.dap_layout").reset_soon()
+            end,
           },
           files = {
             hidden = true, -- show dotfiles in fuzzy finder

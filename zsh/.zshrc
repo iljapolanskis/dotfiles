@@ -7,17 +7,6 @@ fi
 # ── Environment variables (loaded early so aliases & tools can use them) ──
 [[ -f ~/.zshrc.env ]] && source ~/.zshrc.env
 
-# ── NVM For Node versioning (lazy-loaded)
-export NVM_DIR="$HOME/.nvm"
-_nvm_load() {
-  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
-  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
-}
-nvm() { unfunction nvm; _nvm_load; nvm "$@"; }
-node() { unfunction node; _nvm_load; node "$@"; }
-npm() { unfunction npm; _nvm_load; npm "$@"; }
-npx() { unfunction npx; _nvm_load; npx "$@"; }
-
 # ── Editor ────────────────────────────────────────────────────────
 export EDITOR="${SSH_CONNECTION:+vim}"
 export EDITOR="${EDITOR:-nvim}"
@@ -25,33 +14,34 @@ export EDITOR="${EDITOR:-nvim}"
 export GPG_TTY=$TTY
 
 # ── PATH (single assignment — prepend order = priority order) ─────
-export PATH="$HOME/go/bin:$HOME/.local/bin:/opt/homebrew/opt/bison/bin:$HOME/.pyenv/bin:$PATH"
+# Dedupe path/fpath so nested shells (tmux, nvim :terminal) don't grow them
+# (-U dedupes only on array assignment, hence `path=(...)` not `PATH=...`)
+typeset -U path fpath
+
+# ── fnm for Node versioning (switches on cd via .nvmrc/.node-version)
+eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
+
+path=($HOME/go/bin $HOME/.local/bin /opt/homebrew/opt/libpq/bin /opt/homebrew/opt/bison/bin $HOME/.pyenv/bin $path)
 export PYENV_ROOT="$HOME/.pyenv"
 
 # ── Completion (cached — skips security audit if dump is <24h old) ─
-fpath=($HOME/.docker/completions $fpath)
+fpath=($HOME/.zfunc $HOME/.docker/completions $fpath)
 autoload -Uz compinit
-if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
-  compinit
-else
+# Glob in array assignment (globs don't expand inside [[ ]]): non-empty = dump fresh
+_zcompdump=${ZDOTDIR:-$HOME}/.zcompdump
+_zcompdump_fresh=($_zcompdump(N.mh-24))
+if (( $#_zcompdump_fresh )); then
   compinit -C
+else
+  compinit && touch "$_zcompdump"
 fi
-
-# Added by codebase-memory-mcp install
-export PATH="/Users/ilja.polanskis/.local/bin:$PATH"
+unset _zcompdump _zcompdump_fresh
 
 # Claude Code config location (XDG-style)
 export CLAUDE_CONFIG_DIR="$HOME/.config/claude"
 
 # k9s config location (else falls back to ~/Library/Application Support/k9s)
 export K9S_CONFIG_DIR="$HOME/.config/k9s"
-
-# ── History ───────────────────────────────────────────────────────
-# TODO: FIX HISTORY
-# HISTFILE=$HOME/.zsh_history
-# HISTSIZE=10000
-# SAVEHIST=10000
-# setopt share_history hist_ignore_dups hist_ignore_space hist_verify
 
 # ── Options ───────────────────────────────────────────────────────
 setopt auto_cd interactive_comments
@@ -78,14 +68,19 @@ alias ll="ls -lhaF"
 alias d="docker"
 alias dc="docker-compose"
 alias ds="docker-sync"
-alias sfdev="AWS_PROFILE=ecr docker run --pull=always \
-  --env GITHUB_TOKEN=$GITHUB_TOKEN \
-  --env DOCKER_USERNAME=$DOCKER_USERNAME \
-  --env DOCKER_PASSWORD=$DOCKER_PASSWORD \
-  --rm \
-  -v $HOME/.aws/:/home/www-data/.aws/:ro \
-  -v $HOME/.sfdev/:/home/www-data/.sfdev/:rw \
-  -ti 935144294771.dkr.ecr.eu-west-1.amazonaws.com/sunfinancegroup/cli-devtool:latest"
+# Function, not alias: `--env VAR` makes docker read secrets at run time
+# instead of baking them into the alias definition
+unalias sfdev 2>/dev/null
+function sfdev {
+  AWS_PROFILE=ecr docker run --pull=always \
+    --env GITHUB_TOKEN \
+    --env DOCKER_USERNAME \
+    --env DOCKER_PASSWORD \
+    --rm \
+    -v "$HOME/.aws/:/home/www-data/.aws/:ro" \
+    -v "$HOME/.sfdev/:/home/www-data/.sfdev/:rw" \
+    -ti 935144294771.dkr.ecr.eu-west-1.amazonaws.com/sunfinancegroup/cli-devtool:latest "$@"
+}
 
 # Git
 alias gs="git status -s"
@@ -169,6 +164,5 @@ pr-eu1() {
         "$@"
 }
 
-
-# Added by codebase-memory-mcp install
-export PATH="/Users/kau3ep/.local/bin:$PATH"
+# Restore Ghostty's configured colors if a TUI leaves the palette stuck
+resetcolors() { printf '\e]104\a\e]110\a\e]111\a\e]112\a'; }

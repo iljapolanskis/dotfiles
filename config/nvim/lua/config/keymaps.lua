@@ -36,6 +36,12 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- Macro recording on Q instead of q (q stays free for close-window maps).
+-- Non-recursive, so Q reaches the built-in q even though q is <Nop>.
+-- Replay last macro with @@ (what Q did by default).
+vim.keymap.set("n", "Q", "q", { desc = "Record macro" })
+vim.keymap.set("n", "q", "<Nop>")
+
 -- terminal in current file's directory
 -- vim.keymap.set("n", "<leader>fD", function()
 --   Snacks.terminal(nil, { cwd = vim.fn.expand("%:p:h") })
