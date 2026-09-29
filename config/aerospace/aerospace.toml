@@ -6,7 +6,7 @@ config-version = 2
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = ['exec-and-forget sketchybar']
 
-exec-on-workspace-change = ['/bin/bash', '/Users/ilja.polanskis/.config/aerospace/scripts/on-workspace-change.sh']
+exec-on-workspace-change = ['/bin/bash', '-c', 'exec /bin/bash "$HOME/.config/aerospace/scripts/on-workspace-change.sh"']
 
 # Start AeroSpace at login
 start-at-login = false
@@ -180,10 +180,10 @@ run = 'move-node-to-workspace slack'
     alt-comma = 'layout accordion horizontal vertical'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#focus
-    alt-h = ['focus left',  'exec-and-forget /Users/ilja.polanskis/.config/aerospace/scripts/sb-trigger.sh window_focus_changed']
-    alt-j = ['focus --boundaries-action wrap-around-the-workspace down',  'exec-and-forget /Users/ilja.polanskis/.config/aerospace/scripts/sb-trigger.sh window_focus_changed']
-    alt-k = ['focus --boundaries-action wrap-around-the-workspace up',    'exec-and-forget /Users/ilja.polanskis/.config/aerospace/scripts/sb-trigger.sh window_focus_changed']
-    alt-l = ['focus right', 'exec-and-forget /Users/ilja.polanskis/.config/aerospace/scripts/sb-trigger.sh window_focus_changed']
+    alt-h = ['focus left',  'exec-and-forget $HOME/.config/aerospace/scripts/sb-trigger.sh window_focus_changed']
+    alt-j = ['focus --boundaries-action wrap-around-the-workspace down',  'exec-and-forget $HOME/.config/aerospace/scripts/sb-trigger.sh window_focus_changed']
+    alt-k = ['focus --boundaries-action wrap-around-the-workspace up',    'exec-and-forget $HOME/.config/aerospace/scripts/sb-trigger.sh window_focus_changed']
+    alt-l = ['focus right', 'exec-and-forget $HOME/.config/aerospace/scripts/sb-trigger.sh window_focus_changed']
 
 #   cmd-h = 'focus --boundaries all-monitors-outer-frame --boundaries-action wrap-around-all-monitors left'
 #   cmd-j = 'focus --boundaries all-monitors-outer-frame --boundaries-action wrap-around-all-monitors down'
@@ -191,10 +191,10 @@ run = 'move-node-to-workspace slack'
 #   cmd-l = 'focus --boundaries all-monitors-outer-frame --boundaries-action wrap-around-all-monitors right'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#move
-    alt-shift-h = ['move left',  'exec-and-forget /Users/ilja.polanskis/.config/aerospace/scripts/sb-trigger.sh window_focus_changed']
-    alt-shift-j = ['move down',  'exec-and-forget /Users/ilja.polanskis/.config/aerospace/scripts/sb-trigger.sh window_focus_changed']
-    alt-shift-k = ['move up',    'exec-and-forget /Users/ilja.polanskis/.config/aerospace/scripts/sb-trigger.sh window_focus_changed']
-    alt-shift-l = ['move right', 'exec-and-forget /Users/ilja.polanskis/.config/aerospace/scripts/sb-trigger.sh window_focus_changed']
+    alt-shift-h = ['move left',  'exec-and-forget $HOME/.config/aerospace/scripts/sb-trigger.sh window_focus_changed']
+    alt-shift-j = ['move down',  'exec-and-forget $HOME/.config/aerospace/scripts/sb-trigger.sh window_focus_changed']
+    alt-shift-k = ['move up',    'exec-and-forget $HOME/.config/aerospace/scripts/sb-trigger.sh window_focus_changed']
+    alt-shift-l = ['move right', 'exec-and-forget $HOME/.config/aerospace/scripts/sb-trigger.sh window_focus_changed']
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#resize
     alt-minus = 'resize smart -50'

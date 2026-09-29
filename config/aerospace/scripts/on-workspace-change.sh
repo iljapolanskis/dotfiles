@@ -20,7 +20,7 @@ FOCUSED="$AEROSPACE_FOCUSED_WORKSPACE"
 
   VISIBLE=$(aerospace list-workspaces --monitor all --visible 2>/dev/null | tr '\n' ' ')
 
-  /Users/ilja.polanskis/.config/aerospace/scripts/sb-trigger.sh aerospace_workspace_change \
+  "$HOME"/.config/aerospace/scripts/sb-trigger.sh aerospace_workspace_change \
     FOCUSED_WORKSPACE="$FOCUSED" \
     VISIBLE="$VISIBLE"
 

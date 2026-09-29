@@ -13,7 +13,7 @@
       "Read(~/.ssh/**)"
     ]
   },
-  "model": "opus[1m]",
+  "model": "opus",
   "hooks": {
     "PreToolUse": [
       {
@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/ilja.polanskis/.config/claude/hooks/cbm-code-discovery-gate",
+            "command": "$HOME/.config/claude/hooks/cbm-code-discovery-gate",
             "timeout": 5
           }
         ]
@@ -42,7 +42,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash '/Users/ilja.polanskis/.config/claude/hooks/herdr-agent-state.sh' session",
+            "command": "bash \"$HOME/.config/claude/hooks/herdr-agent-state.sh\" session",
             "timeout": 10
           }
         ]
@@ -52,7 +52,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/ilja.polanskis/.config/claude/hooks/cbm-session-reminder"
+            "command": "$HOME/.config/claude/hooks/cbm-session-reminder"
           }
         ]
       },
@@ -61,7 +61,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/ilja.polanskis/.config/claude/hooks/cbm-session-reminder"
+            "command": "$HOME/.config/claude/hooks/cbm-session-reminder"
           }
         ]
       },
@@ -70,7 +70,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/ilja.polanskis/.config/claude/hooks/cbm-session-reminder"
+            "command": "$HOME/.config/claude/hooks/cbm-session-reminder"
           }
         ]
       },
@@ -79,7 +79,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/ilja.polanskis/.config/claude/hooks/cbm-session-reminder"
+            "command": "$HOME/.config/claude/hooks/cbm-session-reminder"
           }
         ]
       }
@@ -90,7 +90,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/ilja.polanskis/.config/claude/hooks/cbm-subagent-reminder"
+            "command": "$HOME/.config/claude/hooks/cbm-subagent-reminder"
           }
         ]
       }
